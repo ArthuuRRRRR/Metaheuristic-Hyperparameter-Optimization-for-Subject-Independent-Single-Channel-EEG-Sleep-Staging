@@ -20,9 +20,6 @@ ID_TO_STAGE = {
 }
 
 
-
-
-
 def check_file_exists(file_path: str | Path) -> Path:
     path = Path(file_path)
 
@@ -158,3 +155,61 @@ def balancing_dataset_on_wake(X, y,wake_label=0, margin_epochs=60):
     end = min(len(y), last_sleep + margin_epochs + 1)
 
     return X[start:end], y[start:end]
+
+
+
+def get_band_power(epoch_signal,sampling_frequency,low_frequency,high_frequency,):
+
+    #Je calcule l'énergie contenue dans une bande de fréquencesà l'aide d'une FFT
+
+    fft_values = np.fft.rfft(epoch_signal)
+
+    power_spectrum = np.abs(fft_values) ** 2
+
+    frequencies = np.fft.rfftfreq(len(epoch_signal),d=1 / sampling_frequency)
+
+    frequency_mask = ((frequencies >= low_frequency)& (frequencies <= high_frequency))
+
+    band_power = np.sum(power_spectrum[frequency_mask])
+
+    return band_power
+
+def extract_epoch_features(epochs, sampling_frequency):
+
+    all_features = []
+
+    for epoch_signal in epochs:
+
+        signal_mean = np.mean(epoch_signal)
+        signal_standard_deviation = np.std(epoch_signal)
+        signal_variance = np.var(epoch_signal)
+        signal_minimum = np.min(epoch_signal)
+        signal_maximum = np.max(epoch_signal)
+        signal_energy = np.sum(epoch_signal ** 2)
+
+        # je sépare en différentes bandes fréquentielles car certaines fréquences sont plus représentées à des états spécifiques du sommeil
+
+        frequency_bands = [
+            (0.5, 4),
+            (4, 8),
+            (8, 13),
+            (13, 30),]
+
+        band_powers = []
+
+        for low_frequency, high_frequency in frequency_bands:
+            power = get_band_power(epoch_signal,sampling_frequency,low_frequency,high_frequency,)
+            band_powers.append(power)
+            
+        feature_vector = [
+            signal_mean,
+            signal_standard_deviation,
+            signal_variance,
+            signal_minimum,
+            signal_maximum,
+            signal_energy,
+            *band_powers,]
+
+        all_features.append(feature_vector)
+
+    return np.array(all_features, dtype=np.float32)
