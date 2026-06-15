@@ -1,7 +1,7 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
-from eeg_data import load_eeg_file,attach_annotations,select_channel,print_eeg_summary, create_epochs_labelled, print_label_distribution, ID_TO_STAGE
+from eeg_data import load_eeg_file,attach_annotations,select_channel,print_eeg_summary, create_epochs_labelled, print_label_distribution, ID_TO_STAGE, balancing_dataset_on_wake
 
 def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
@@ -39,10 +39,13 @@ def main() :
 
     X, y = create_epochs_labelled(raw, epoch_length_sec=30)
 
+    X, y = balancing_dataset_on_wake(X, y)
+
     print("\nDataset created")
     print("-" * 40)
     print("X shape:", X.shape)
     print("y shape:", y.shape)
+    
 
     print_label_distribution(y)
 

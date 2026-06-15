@@ -143,3 +143,18 @@ def print_label_distribution(y):
     for label_id, count in zip(unique_labels, counts):
         label_name = ID_TO_STAGE[label_id]
         print(f"{label_name}: {count} epochs")
+    
+
+def balancing_dataset_on_wake(X, y,wake_label=0, margin_epochs=60):
+    non_wake_indices = np.where(y != wake_label)[0]
+
+    if len(non_wake_indices) == 0:
+        return X, y
+
+    first_sleep = non_wake_indices[0]
+    last_sleep = non_wake_indices[-1]
+
+    start = max(0, first_sleep - margin_epochs)
+    end = min(len(y), last_sleep + margin_epochs + 1)
+
+    return X[start:end], y[start:end]
