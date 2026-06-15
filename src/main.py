@@ -2,6 +2,9 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from eeg_data import load_eeg_file,attach_annotations,select_channel,print_eeg_summary, create_epochs_labelled, print_label_distribution, ID_TO_STAGE, balancing_dataset_on_wake, extract_epoch_features
+from model import RandomForestModel
+from metrics import evaluate_predictions
+from sklearn.model_selection import train_test_split
 
 def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
@@ -47,7 +50,7 @@ def main() :
     print("-" * 40)
     print("X features shape:", X_features.shape)
     print("y shape:", y.shape)
-    
+
     """
     print("\nDataset created")
     print("-" * 40)
@@ -56,10 +59,20 @@ def main() :
     
 
     print_label_distribution(y)
-
+    """
     print("\nFirst 10 labels:")
     for label in y[:100]:
-        print(label, ID_TO_STAGE[label])
+        print(label, ID_TO_STAGE[label])"""
+    
+    X_train, X_test, y_train, y_test = train_test_split(X_features,y,test_size=0.2,random_state=42,stratify=y)
+    
+    random_forest = RandomForestModel()
+
+    random_forest.train(X_train,y_train)
+
+    y_pred = random_forest.predict(X_test)
+
+    evaluate_predictions(y_test,y_pred)
 
 if __name__ == "__main__":
     main()
