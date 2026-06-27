@@ -5,6 +5,7 @@ from eeg_data import load_eeg_file,attach_annotations,select_channel,print_eeg_s
 from model import RandomForestModel
 from metrics import evaluate_predictions
 from sklearn.model_selection import train_test_split
+from optimizer_pso_rf import PSO_Optimizer
 
 def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
@@ -66,13 +67,28 @@ def main() :
     
     X_train, X_test, y_train, y_test = train_test_split(X_features,y,test_size=0.2,random_state=42,stratify=y)
     
-    random_forest = RandomForestModel()
+    random_forest = RandomForestModel(n_estimators=200,max_depth=10,min_samples_split=5,min_samples_leaf=2,max_features="sqrt")
 
     random_forest.train(X_train,y_train)
 
     y_pred = random_forest.predict(X_test)
 
     evaluate_predictions(y_test,y_pred)
+
+
+
+    pso_optimizer = PSO_Optimizer(n_particles=10,n_iterations=10)
+
+    best_pso_params, best_pso_score = pso_optimizer.optimize(X_train, y_train)
+
+    print("\nBest PSO parameters")
+    print("-" * 40)
+    print(best_pso_params)
+
+    print("\nBest PSO validation F1-macro")
+    print("-" * 40)
+    print(best_pso_score)
+    
 
 if __name__ == "__main__":
     main()
