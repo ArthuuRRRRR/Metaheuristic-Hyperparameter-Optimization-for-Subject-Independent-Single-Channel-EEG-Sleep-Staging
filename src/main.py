@@ -73,10 +73,50 @@ def main() :
 
     y_pred = random_forest.predict(X_test)
 
-    evaluate_predictions(y_test,y_pred)
+    baseline_results =evaluate_predictions(y_test,y_pred)
 
 
+    pso_random_forest = RandomForestModel(
+    n_estimators=148,
+    max_depth=11,
+    min_samples_split=8,
+    min_samples_leaf=2,
+    max_features="sqrt",
+    class_weight="balanced",
+    random_state=42,
+    n_jobs=-1)
 
+    pso_random_forest.train(X_train, y_train)
+
+    y_pred_pso = pso_random_forest.predict(X_test)
+
+    pso_results = evaluate_predictions(y_test, y_pred_pso)
+
+
+    print("\nFinal comparison")
+    print("=" * 60)
+
+    print("Model\t\tAccuracy\tPrecision\tRecall\t\tF1 macro\tF1 weighted")
+
+    print(
+        f"Baseline RF\t"
+        f"{baseline_results['accuracy']:.4f}\t\t"
+        f"{baseline_results['precision_macro']:.4f}\t\t"
+        f"{baseline_results['recall_macro']:.4f}\t\t"
+        f"{baseline_results['f1_macro']:.4f}\t\t"
+        f"{baseline_results['f1_weighted']:.4f}"
+    )
+
+    print(
+        f"RF + PSO\t"
+        f"{pso_results['accuracy']:.4f}\t\t"
+        f"{pso_results['precision_macro']:.4f}\t\t"
+        f"{pso_results['recall_macro']:.4f}\t\t"
+        f"{pso_results['f1_macro']:.4f}\t\t"
+        f"{pso_results['f1_weighted']:.4f}"
+    )
+
+    """
     pso_optimizer = PSO_Optimizer(n_particles=10,n_iterations=10)
 
     best_pso_params, best_pso_score = pso_optimizer.optimize(X_train, y_train)
@@ -89,6 +129,7 @@ def main() :
     print("-" * 40)
     print(best_pso_score)
     
-
+    
+    """
 if __name__ == "__main__":
     main()
