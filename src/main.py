@@ -84,7 +84,12 @@ def main() :
         {
             "psg": Path("C:\\Users\\delha\\Downloads\\SC4002E0-PSG.edf"),
             "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4002EC-Hypnogram.edf")
+        },
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4011E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4011EH-Hypnogram.edf")
         }
+
     ]
 
     all_X_features = []
@@ -140,13 +145,13 @@ def main() :
     baseline_results =evaluate_predictions(y_test,y_pred)
 
 
-    pso_random_forest = RandomForestModel(n_estimators=148,max_depth=11,min_samples_split=8,min_samples_leaf=2,max_features="sqrt",class_weight="balanced",random_state=42,n_jobs=-1)
+    pso_random_forest = RandomForestModel(n_estimators=175, max_depth=17, min_samples_split=10, min_samples_leaf=2, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1)
     pso_random_forest.train(X_train, y_train)
     y_pred_pso = pso_random_forest.predict(X_test)
     print("\nPSO Random Forest results")
     pso_results = evaluate_predictions(y_test, y_pred_pso)
 
-    dso_random_forest = RandomForestModel(n_estimators=92, max_depth=13, min_samples_split=9, min_samples_leaf=4, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1)
+    dso_random_forest = RandomForestModel(n_estimators=111, max_depth=11, min_samples_split=7, min_samples_leaf=3, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1)
     dso_random_forest.train(X_train, y_train)
     y_pred_dso = dso_random_forest.predict(X_test)
     print("\nDSO Random Forest results")
@@ -229,6 +234,7 @@ def main() :
     )
 
 
+    # all_optimizer(X_train, y_train)
 
 if __name__ == "__main__":
     main()
