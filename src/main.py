@@ -59,23 +59,53 @@ def all_optimizer(X_train, y_train):
     print("-" * 40)
     print(best_dso_score)
 
-def main() :
-    psg_path = Path("C:\\Users\\delha\\Downloads\\SC4001E0-PSG.edf")
-    hypnogram_path = Path("C:\\Users\\delha\\Downloads\\SC4001EC-Hypnogram.edf")
-    channel_name = "EEG Fpz-Cz"
-
+def process_patient(psg_path, hypnogram_path, channel_name):
     raw = load_eeg_file(psg_path, preload=False)
     raw = attach_annotations(raw, hypnogram_path)
     raw = select_channel(raw, channel_name)
 
     print_eeg_summary(raw)
-    plot_eeg_segment(raw, start_sec=31500, duration_sec=30)
 
     X, y = create_epochs_labelled(raw, epoch_length_sec=30)
-
     X, y = balancing_dataset_on_wake(X, y)
 
     X_features = extract_epoch_features(X, raw.info["sfreq"])
+
+    return X_features, y
+
+def main() :
+    channel_name = "EEG Fpz-Cz"
+
+    patients = [
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4001E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4001EC-Hypnogram.edf")
+        },
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4002E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4002EC-Hypnogram.edf")
+        }
+    ]
+
+    all_X_features = []
+    all_y = []
+
+    for patient in patients:
+        print("\nProcessing patient")
+        print("=" * 40)
+        print(patient["psg"])
+
+        X_patient, y_patient = process_patient(
+            patient["psg"],
+            patient["hypnogram"],
+            channel_name
+        )
+
+        all_X_features.append(X_patient)
+        all_y.append(y_patient)
+
+    X_features = np.concatenate(all_X_features, axis=0)
+    y = np.concatenate(all_y, axis=0)
 
     print("\nFeatures extracted")
     print("-" * 40)
