@@ -2,7 +2,7 @@ import numpy as np
 
 
 class DSO:
-    def __init__(self, dim=30, population_size=30, max_eval=1000, lower_bound=-10, upper_bound=10, objective_function=None, seed=None):
+    def __init__(self, dim=10, population_size=30, max_eval=100, lower_bound=-10, upper_bound=10, objective_function=None, seed=None):
         self.dim = dim
         self.pop_size = population_size
         self.max_eval = max_eval

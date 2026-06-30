@@ -6,6 +6,7 @@ from model import RandomForestModel
 from metrics import evaluate_predictions
 from sklearn.model_selection import train_test_split
 from optimizer_pso_rf import PSO_Optimizer
+from optimizer_dso_rf import DSO_Optimizer
 
 def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
@@ -92,6 +93,15 @@ def main() :
 
     pso_results = evaluate_predictions(y_test, y_pred_pso)
 
+    dso_random_forest = RandomForestModel(n_estimators=92, max_depth=13, min_samples_split=9, min_samples_leaf=4, max_features="sqrt", class_weight="balanced", random_state=42, n_jobs=-1)
+
+    dso_random_forest.train(X_train, y_train)
+
+    y_pred_dso = dso_random_forest.predict(X_test)
+
+    dso_results = evaluate_predictions(y_test, y_pred_dso)
+                                          
+
 
     print("\nFinal comparison")
     print("=" * 60)
@@ -116,6 +126,15 @@ def main() :
         f"{pso_results['f1_weighted']:.4f}"
     )
 
+    print(
+        f"RF + DSO\t"
+        f"{dso_results['accuracy']:.4f}\t\t"
+        f"{dso_results['precision_macro']:.4f}\t\t"
+        f"{dso_results['recall_macro']:.4f}\t\t"
+        f"{dso_results['f1_macro']:.4f}\t\t"
+        f"{dso_results['f1_weighted']:.4f}"
+    )
+
     """
     pso_optimizer = PSO_Optimizer(n_particles=10,n_iterations=10)
 
@@ -130,6 +149,28 @@ def main() :
     print(best_pso_score)
     
     
+    """
+    """
+    
+    print("\nDSO Optimization")
+    print("=" * 40)
+
+    dso_optimizer = DSO_Optimizer(
+        population_size=5,
+        max_eval=30,
+        random_state=42
+    )
+
+    best_dso_params, best_dso_score = dso_optimizer.optimize(X_train, y_train)
+
+    print("\nBest DSO parameters")
+    print("-" * 40)
+    print(best_dso_params)
+
+    print("\nBest DSO validation F1-macro")
+    print("-" * 40)
+    print(best_dso_score)
+
     """
 if __name__ == "__main__":
     main()
