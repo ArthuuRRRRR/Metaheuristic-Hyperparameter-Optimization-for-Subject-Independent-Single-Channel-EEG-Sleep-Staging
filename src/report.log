@@ -4,3 +4,16 @@
 2026-06-30 09:17:20,515 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.2911079639831744, best pos: [176.00809368  11.15230189  17.03388856   2.8611914 ]
 2026-06-30 09:38:19,818 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
 2026-06-30 09:41:57,632 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.24975138898076155, best pos: [174.61390508  16.78426716   9.59633649   2.36047848]
+2026-07-07 16:52:57,587 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-07 16:56:08,822 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.2718827298060488, best pos: [138.63611355 149.1752665  107.00567537   2.25772604  -2.11402702
+  -1.97894148]
+2026-07-08 07:42:01,478 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-08 07:45:10,373 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.23372081296887126, best pos: [120.60963645  87.20207606 138.80490908   2.72470905  -3.27764416
+  -2.12254731]
+2026-07-08 07:45:32,276 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-08 07:47:49,519 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.23351339056020526, best pos: [251.11319387  16.65461107   9.54714126   2.85412556]
+2026-07-08 07:56:15,427 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-08 07:59:51,529 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.2310437113067123, best pos: [141.29389572 125.88353374  27.92043386   1.91254155  -3.49920632
+  -1.96790159]
+2026-07-08 08:01:04,837 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-08 08:02:36,764 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.23521054830988408, best pos: [101.84804599  25.21330417   9.80156425   1.76188185]

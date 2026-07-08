@@ -1,6 +1,7 @@
 from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
+from torch import relu
 from eeg_data import load_eeg_file,attach_annotations,select_channel,print_eeg_summary, create_epochs_labelled, print_label_distribution, ID_TO_STAGE, balancing_dataset_on_wake, extract_epoch_features
 from model import RandomForestModel ,LogisticRegressionModel, SVMModel, MLPModel
 from metrics import evaluate_predictions
@@ -8,6 +9,8 @@ from sklearn.model_selection import train_test_split
 from optimizer_pso_rf import PSO_Optimizer
 from optimizer_dso_rf import DSO_Optimizer
 from sklearn.preprocessing import StandardScaler
+from optimizer_pso_mlp import PSO_MLP_Optimizer
+from optimizer_dso_mlp import DSO_MLP_Optimizer
 
 def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
@@ -47,7 +50,7 @@ def all_optimizer(X_train, y_train):
     print("\nDSO Optimization")
     print("=" * 40)
 
-    dso_optimizer = DSO_Optimizer(population_size=5,max_eval=30,random_state=42)
+    dso_optimizer = DSO_Optimizer(population_size=10,max_eval=100,random_state=42)
 
     best_dso_params, best_dso_score = dso_optimizer.optimize(X_train, y_train)
 
@@ -64,7 +67,7 @@ def process_patient(psg_path, hypnogram_path, channel_name):
     raw = attach_annotations(raw, hypnogram_path)
     raw = select_channel(raw, channel_name)
 
-    print_eeg_summary(raw)
+    #print_eeg_summary(raw)
 
     X, y = create_epochs_labelled(raw, epoch_length_sec=30)
     X, y = balancing_dataset_on_wake(X, y)
@@ -72,6 +75,41 @@ def process_patient(psg_path, hypnogram_path, channel_name):
     X_features = extract_epoch_features(X, raw.info["sfreq"])
 
     return X_features, y
+
+
+def all_optimizer_mlp(X_train_scaled, y_train):
+    print("\nPSO MLP Optimization")
+    print("=" * 40)
+
+    pso_mlp_optimizer = PSO_MLP_Optimizer(n_particles=10,n_iterations=10,random_state=42)
+
+    best_pso_mlp_params, best_pso_mlp_score = pso_mlp_optimizer.optimize(X_train_scaled,y_train)
+
+    print("\nBest PSO MLP parameters")
+    print("-" * 40)
+    print(best_pso_mlp_params)
+
+    print("\nBest PSO MLP validation F1-macro")
+    print("-" * 40)
+    print(best_pso_mlp_score)
+
+    print("\nDSO MLP Optimization")
+    print("=" * 40)
+
+    dso_mlp_optimizer = DSO_MLP_Optimizer(population_size=10,max_eval=100,random_state=42)
+
+    best_dso_mlp_params, best_dso_mlp_score = dso_mlp_optimizer.optimize(X_train_scaled,y_train)
+
+    print("\nBest DSO MLP parameters")
+    print("-" * 40)
+    print(best_dso_mlp_params)
+
+    print("\nBest DSO MLP validation F1-macro")
+    print("-" * 40)
+    print(best_dso_mlp_score)
+
+    return best_pso_mlp_params, best_pso_mlp_score, best_dso_mlp_params, best_dso_mlp_score
+
 
 def main() :
     channel_name = "EEG Fpz-Cz"
@@ -88,6 +126,18 @@ def main() :
         {
             "psg": Path("C:\\Users\\delha\\Downloads\\SC4011E0-PSG.edf"),
             "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4011EH-Hypnogram.edf")
+        },
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4012E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4012EC-Hypnogram.edf")
+        },
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4021E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4021EH-Hypnogram.edf")
+        },
+        {
+            "psg": Path("C:\\Users\\delha\\Downloads\\SC4022E0-PSG.edf"),
+            "hypnogram": Path("C:\\Users\\delha\\Downloads\\SC4022EJ-Hypnogram.edf")
         }
 
     ]
@@ -96,15 +146,14 @@ def main() :
     all_y = []
 
     for patient in patients:
-        print("\nProcessing patient")
-        print("=" * 40)
-        print(patient["psg"])
+        #print("\nProcessing patient")
+        #print("=" * 40)
+        #print(patient["psg"])
 
         X_patient, y_patient = process_patient(
             patient["psg"],
             patient["hypnogram"],
-            channel_name
-        )
+            channel_name)
 
         all_X_features.append(X_patient)
         all_y.append(y_patient)
@@ -176,6 +225,41 @@ def main() :
     Logistic_results = evaluate_predictions(y_test, y_pred_logistic)
 
 
+
+    pso_mlp_model = MLPModel(
+        hidden_layer_sizes=(141, 126),
+        activation="relu",
+        solver="adam",
+        alpha=0.0003168062032167149,
+        learning_rate_init=0.01076709166475047,
+        max_iter=1000,
+        random_state=42)
+    pso_mlp_model.train(X_train_scaled, y_train)
+    y_pred_pso_mlp = pso_mlp_model.predict(X_test_scaled)
+    print("\nPSO MLP results")
+    PSO_MLP_results = evaluate_predictions(y_test, y_pred_pso_mlp)
+
+
+    dso_mlp_model = MLPModel(
+        hidden_layer_sizes=(71,79),
+        activation="relu",
+        solver="adam",
+        alpha=0.03826159425099954,
+        learning_rate_init=0.01076709166475047,
+        max_iter=1000,
+        random_state=42)
+    dso_mlp_model.train(X_train_scaled, y_train)
+    y_pred_dso_mlp = dso_mlp_model.predict(X_test_scaled)
+    print("\nDSO MLP results")
+    DSO_MLP_results = evaluate_predictions(y_test, y_pred_dso_mlp)
+
+
+
+    ###############################################################Optimizer#############################
+
+    #best_pso_mlp_params, best_pso_mlp_score, best_dso_mlp_params, best_dso_mlp_score = all_optimizer_mlp(X_train_scaled,y_train)
+    #all_optimizer(X_train, y_train)
+
     print("\nFinal comparison")
     print("=" * 60)
 
@@ -225,6 +309,23 @@ def main() :
         f"{MLP_results['f1_weighted']:.4f}"
     )
     print(
+    f"MLP + PSO\t"
+    f"{PSO_MLP_results['accuracy']:.4f}\t\t"
+    f"{PSO_MLP_results['precision_macro']:.4f}\t\t"
+    f"{PSO_MLP_results['recall_macro']:.4f}\t\t"
+    f"{PSO_MLP_results['f1_macro']:.4f}\t\t"
+    f"{PSO_MLP_results['f1_weighted']:.4f}"
+    )
+
+    print(
+        f"MLP + DSO\t"
+        f"{DSO_MLP_results['accuracy']:.4f}\t\t"
+        f"{DSO_MLP_results['precision_macro']:.4f}\t\t"
+        f"{DSO_MLP_results['recall_macro']:.4f}\t\t"
+        f"{DSO_MLP_results['f1_macro']:.4f}\t\t"
+        f"{DSO_MLP_results['f1_weighted']:.4f}"
+    )
+    print(
         f"Logistic Regression\t"
         f"{Logistic_results['accuracy']:.4f}\t\t"
         f"{Logistic_results['precision_macro']:.4f}\t\t"
@@ -234,7 +335,7 @@ def main() :
     )
 
 
-    # all_optimizer(X_train, y_train)
+    
 
 if __name__ == "__main__":
     main()
