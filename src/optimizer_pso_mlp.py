@@ -3,7 +3,7 @@ import pyswarms as ps
 import warnings
 
 from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedGroupKFold, cross_val_score
 from sklearn.exceptions import ConvergenceWarning
 
 
@@ -60,10 +60,10 @@ class PSO_MLP_Optimizer:
 
         return params
 
-    def objective_function(self, particles, X_train, y_train):
+    def objective_function(self, particles, X_train, y_train, groups_train):
         losses = []
 
-        cv = StratifiedKFold(
+        cv = StratifiedGroupKFold(
             n_splits=3,
             shuffle=True,
             random_state=self.random_state
@@ -81,6 +81,7 @@ class PSO_MLP_Optimizer:
                     model,
                     X_train,
                     y_train,
+                    groups=groups_train,
                     cv=cv,
                     scoring="f1_macro",
                     n_jobs=1
@@ -93,7 +94,8 @@ class PSO_MLP_Optimizer:
 
         return np.array(losses)
 
-    def optimize(self, X_train, y_train):
+    def optimize(self, X_train, y_train, groups_train):
+        np.random.seed(self.random_state)
         bounds = (self.lower_bounds, self.upper_bounds)
 
         optimizer = ps.single.GlobalBestPSO(
@@ -107,7 +109,8 @@ class PSO_MLP_Optimizer:
             lambda particles: self.objective_function(
                 particles,
                 X_train,
-                y_train
+                y_train,
+                groups_train
             ),
             iters=self.n_iterations
         )

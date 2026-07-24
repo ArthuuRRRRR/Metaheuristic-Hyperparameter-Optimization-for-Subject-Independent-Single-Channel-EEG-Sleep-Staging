@@ -2,7 +2,7 @@ import numpy as np
 import warnings
 
 from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedGroupKFold, cross_val_score
 from sklearn.exceptions import ConvergenceWarning
 
 from dso import DSO
@@ -61,12 +61,12 @@ class DSO_MLP_Optimizer:
 
         return params
 
-    def objective_function(self, position, X_train, y_train):
+    def objective_function(self, position, X_train, y_train, groups_train):
         params = self.decode_position_to_params(position)
 
         model = MLPClassifier(**params)
 
-        cv = StratifiedKFold(
+        cv = StratifiedGroupKFold(
             n_splits=3,
             shuffle=True,
             random_state=self.random_state)
@@ -78,6 +78,7 @@ class DSO_MLP_Optimizer:
                 model,
                 X_train,
                 y_train,
+                groups=groups_train,
                 cv=cv,
                 scoring="f1_macro",
                 n_jobs=1)
@@ -86,7 +87,7 @@ class DSO_MLP_Optimizer:
 
         return 1 - mean_f1_macro
 
-    def optimize(self, X_train, y_train):
+    def optimize(self, X_train, y_train, groups_train):
         dso = DSO(
             dim=self.dim,
             population_size=self.population_size,
@@ -96,7 +97,8 @@ class DSO_MLP_Optimizer:
             objective_function=lambda position: self.objective_function(
                 position,
                 X_train,
-                y_train),
+                y_train,
+                groups_train),
             seed=self.random_state
         )
 

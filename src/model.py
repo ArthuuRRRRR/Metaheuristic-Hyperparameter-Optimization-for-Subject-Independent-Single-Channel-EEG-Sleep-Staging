@@ -55,7 +55,7 @@ class SVMModel:
 
 
 class MLPModel:
-    def __init__(self,hidden_layer_sizes=(100,),activation="relu",solver="adam",alpha=0.0001,learning_rate_init=0.001,max_iter=1000,random_state=42):
+    def __init__(self,hidden_layer_sizes=(100,),activation="relu",solver="adam",alpha=0.0001,learning_rate_init=0.001,max_iter=1000,random_state=42, early_stopping=False):
 
         self.model = MLPClassifier(
             hidden_layer_sizes=hidden_layer_sizes,
@@ -64,7 +64,8 @@ class MLPModel:
             alpha=alpha,
             learning_rate_init=learning_rate_init,
             max_iter=max_iter,
-            random_state=random_state)
+            random_state=random_state,
+            early_stopping=early_stopping)
 
     def train(self, X_train, y_train):
         self.model.fit(X_train, y_train)

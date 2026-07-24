@@ -17,3 +17,51 @@
   -1.96790159]
 2026-07-08 08:01:04,837 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
 2026-07-08 08:02:36,764 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.23521054830988408, best pos: [101.84804599  25.21330417   9.80156425   1.76188185]
+2026-07-10 07:47:09,711 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-10 07:47:09,713 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-10 07:52:14,092 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-10 07:52:14,094 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-10 07:53:00,507 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-10 07:59:38,330 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.24571519715863366, best pos: [142.12689708  67.14086398  25.76847108   2.34498946  -2.23592097
+  -2.36027254]
+2026-07-10 08:02:32,113 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-10 08:04:11,871 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.25933303356927606, best pos: [75.70332652 26.88426296  4.01283643  1.40150194]
+2026-07-10 08:07:21,897 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-10 08:07:21,898 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-10 08:09:38,848 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-10 08:09:38,849 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 08:21:23,180 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-22 08:21:23,183 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 08:24:27,628 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-22 08:24:27,629 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 08:25:05,573 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-22 08:32:31,995 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.24776096131882153, best pos: [ 57.85427973 136.74431055 170.96264206   1.73000038  -4.88681567
+  -1.88479042]
+2026-07-22 08:36:02,327 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-22 08:40:58,727 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.2591231212912092, best pos: [197.82241853  28.31404351  11.04826445   2.00252369]
+2026-07-22 08:53:25,797 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-22 08:53:25,798 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 17:02:21,896 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-22 17:02:21,897 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 17:03:29,987 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-22 17:43:22,782 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-22 17:43:22,783 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-22 17:43:48,849 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-22 17:48:33,408 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.3554341597608842, best pos: [193.65192821  77.05847871 153.52333311   2.93201664  -2.62311237
+  -1.55460347]
+2026-07-22 17:50:19,159 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-22 17:52:22,082 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.3901411960686233, best pos: [237.37829594  14.08717114   3.71750279   6.13824325]
+2026-07-24 07:01:58,671 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-24 07:01:58,672 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-24 07:02:18,331 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-24 07:09:29,504 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.4136720884097639, best pos: [ 48.17465478 146.62833897  22.31803476   2.18707998  -3.00328275
+  -3.02279398]
+2026-07-24 07:11:26,901 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-24 07:13:54,461 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.4000511914310221, best pos: [77.57474447 13.08253918  7.3946481   2.48802934]
+2026-07-24 07:24:26,419 - numexpr.utils - INFO - Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8.
+2026-07-24 07:24:26,421 - numexpr.utils - INFO - NumExpr defaulting to 8 threads.
+2026-07-24 07:25:00,141 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-24 07:36:12,640 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.4136720884097639, best pos: [ 48.17465478 146.62833897  22.31803476   2.18707998  -3.00328275
+  -3.02279398]
+2026-07-24 07:38:06,434 - pyswarms.single.global_best - INFO - Optimize for 10 iters with {'c1': 1.5, 'c2': 1.5, 'w': 0.7}
+2026-07-24 07:40:23,053 - pyswarms.single.global_best - INFO - Optimization finished | best cost: 0.4000511914310221, best pos: [77.57474447 13.08253918  7.3946481   2.48802934]

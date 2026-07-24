@@ -1,7 +1,7 @@
 import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedGroupKFold, cross_val_score
 
 from dso import DSO
 
@@ -45,27 +45,27 @@ class DSO_Optimizer:
 
         return params
 
-    def objective_function(self, position, X_train, y_train):
+    def objective_function(self, position, X_train, y_train, groups_train):
         params = self.decode_position_to_params(position)
 
         model = RandomForestClassifier(**params)
 
-        cv = StratifiedKFold(n_splits=3,shuffle=True,random_state=self.random_state)
+        cv = StratifiedGroupKFold(n_splits=3,shuffle=True,random_state=self.random_state)
 
-        scores = cross_val_score(model,X_train,y_train,cv=cv,scoring="f1_macro",n_jobs=1)
+        scores = cross_val_score(model,X_train,y_train,groups=groups_train,cv=cv,scoring="f1_macro",n_jobs=1)
 
         mean_f1_macro = scores.mean()
 
         return 1 - mean_f1_macro
 
-    def optimize(self, X_train, y_train):
+    def optimize(self, X_train, y_train, groups_train):
         dso = DSO(
             dim=self.dim,
             population_size=self.population_size,
             max_eval=self.max_eval,
             lower_bound=self.lower_bound,
             upper_bound=self.upper_bound,
-            objective_function=lambda position: self.objective_function(position,X_train,y_train),
+            objective_function=lambda position: self.objective_function(position,X_train,y_train,groups_train),
             seed=self.random_state)
 
         (   self.best_position,
