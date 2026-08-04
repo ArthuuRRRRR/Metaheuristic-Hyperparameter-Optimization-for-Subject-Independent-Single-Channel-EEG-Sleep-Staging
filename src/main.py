@@ -12,7 +12,7 @@ from sklearn.preprocessing import StandardScaler
 from optimizer_pso_mlp import PSO_MLP_Optimizer
 from optimizer_dso_mlp import DSO_MLP_Optimizer
 from sklearn.model_selection import GroupShuffleSplit
-
+from dataset_input import load_sleep_cassette_dataset
 
 import pandas as pd
 from sklearn.metrics import ConfusionMatrixDisplay
@@ -126,7 +126,7 @@ def plot_eeg_segment(raw, start_sec=0, duration_sec=30): # visu rapide
 
 
 def all_optimizer_rf(X_train, y_train, groups_train):
-    pso_optimizer = PSO_Optimizer(n_particles=10,n_iterations=10)
+    pso_optimizer = PSO_Optimizer(n_particles=5,n_iterations=10)
 
     best_pso_params, best_pso_score = pso_optimizer.optimize(X_train, y_train, groups_train)
 
@@ -142,7 +142,7 @@ def all_optimizer_rf(X_train, y_train, groups_train):
     print("\nDSO Optimization")
     print("=" * 40)
 
-    dso_optimizer = DSO_Optimizer(population_size=10,max_eval=100,random_state=42)
+    dso_optimizer = DSO_Optimizer(population_size=5,max_eval=50,random_state=42)
 
     best_dso_params, best_dso_score = dso_optimizer.optimize(X_train, y_train, groups_train)
 
@@ -175,7 +175,7 @@ def all_optimizer_mlp(X_train_scaled, y_train, groups_train):
     print("\nPSO MLP Optimization")
     print("=" * 40)
 
-    pso_mlp_optimizer = PSO_MLP_Optimizer(n_particles=10,n_iterations=10,random_state=42)
+    pso_mlp_optimizer = PSO_MLP_Optimizer(n_particles=5,n_iterations=10,random_state=42)
 
     best_pso_mlp_params, best_pso_mlp_score = pso_mlp_optimizer.optimize(X_train_scaled,y_train,groups_train)
 
@@ -190,7 +190,7 @@ def all_optimizer_mlp(X_train_scaled, y_train, groups_train):
     print("\nDSO MLP Optimization")
     print("=" * 40)
 
-    dso_mlp_optimizer = DSO_MLP_Optimizer(population_size=10,max_eval=100,random_state=42)
+    dso_mlp_optimizer = DSO_MLP_Optimizer(population_size=5,max_eval=50,random_state=42)
 
     best_dso_mlp_params, best_dso_mlp_score = dso_mlp_optimizer.optimize(X_train_scaled,y_train,groups_train)
 
@@ -207,7 +207,7 @@ def all_optimizer_mlp(X_train_scaled, y_train, groups_train):
 
 def main() :
     channel_name = "EEG Fpz-Cz"
-
+    """
     patients = [
         {
             "subject_id":"01",
@@ -292,12 +292,14 @@ def main() :
     print("-" * 40)
     print("X features shape:", X_features.shape)
     print("y shape:", y.shape)
-
     """
-    print("\nDataset created")
-    print("-" * 40)
-    print("X shape:", X.shape)
-    print("y shape:", y.shape)"""
+    X_features, y, groups, recording_groups = (
+    load_sleep_cassette_dataset(
+        channel_name=channel_name,
+        cache_directory="data/sleep_cassette_features",
+        force_rebuild=False
+            )
+        )
     
 
     print_label_distribution(y)
@@ -332,6 +334,9 @@ def main() :
     groups_train = groups[train_indices]
     groups_test = groups[test_indices]
 
+    recordings_train = recording_groups[train_indices]
+    recordings_test = recording_groups[test_indices]
+
 
     train_subjects = set(groups_train)
     test_subjects = set(groups_test)
@@ -340,6 +345,8 @@ def main() :
     print("-" * 40)
     print("Train subjects:", sorted(train_subjects))
     print("Test subjects:", sorted(test_subjects))
+    print("Train recordings:", len(np.unique(recordings_train)))
+    print("Test recordings:", len(np.unique(recordings_test)))
     print("Train epochs:", len(y_train))
     print("Test epochs:", len(y_test))
     print("Subject overlap:", train_subjects & test_subjects)
