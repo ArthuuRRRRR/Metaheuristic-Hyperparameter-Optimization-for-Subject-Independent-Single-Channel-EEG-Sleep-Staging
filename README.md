@@ -268,8 +268,8 @@ Python 3.10 or a more recent compatible version is recommended.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/ArthuuRRRRR/Sleep-Staging-Using-DSO-Optimized-EEG-Spectrograms.git
-cd Sleep-Staging-Using-DSO-Optimized-EEG-Spectrograms
+git clone https://github.com/ArthuuRRRRR/Metaheuristic-Hyperparameter-Optimization-for-Subject-Independent-Single-Channel-EEG-Sleep-Staging.git
+cd Metaheuristic-Hyperparameter-Optimization-for-Subject-Independent-Single-Channel-EEG-Sleep-Staging
 ```
 
 ### 2. Create a virtual environment
